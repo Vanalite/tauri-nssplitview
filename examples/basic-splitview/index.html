@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Split View - Webview Pane</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .info-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .info-value {
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            min-height: 50px;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+
+        .note {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Tauri Webview Pane</h1>
+        <p class="subtitle">HTML + CSS + JavaScript</p>
+
+        <div class="info-box">
+            <h2 style="margin-bottom: 20px;">Split View Status</h2>
+            <div class="info-item">
+                <span class="info-label">Pane Count:</span>
+                <span class="info-value" id="pane-count">-</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Orientation:</span>
+                <span class="info-value" id="orientation">-</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Divider:</span>
+                <span class="info-value" id="divider">-</span>
+            </div>
+        </div>
+
+        <div>
+            <button onclick="refreshInfo()">🔄 Refresh Info</button>
+        </div>
+
+        <div class="status" id="status">
+            <em>Click "Refresh Info" to check split view details</em>
+        </div>
+
+        <div class="note">
+            <strong>✨ This is a Split View Demo!</strong><br><br>
+            <span class="highlight">Left Pane:</span> This webview (HTML/CSS/JS)<br>
+            <span class="highlight">Right Pane:</span> Native macOS NSView<br><br>
+            Drag the divider in the middle to resize! →
+        </div>
+    </div>
+
+    <script>
+        const { invoke } = window.__TAURI__.core;
+
+        async function refreshInfo() {
+            const status = document.getElementById('status');
+            try {
+                status.innerHTML = '<em>Loading...</em>';
+
+                const info = await invoke('get_split_view_info');
+
+                // Parse the info string
+                const lines = info.split('\n');
+                const data = {};
+                lines.forEach(line => {
+                    const [key, value] = line.split(':').map(s => s.trim());
+                    if (key && value) {
+                        data[key] = value;
+                    }
+                });
+
+                document.getElementById('pane-count').textContent = data['- Pane Count'] || '2';
+                document.getElementById('orientation').textContent = data['- Vertical'] === 'true' ? 'Vertical ↕️' : 'Horizontal ↔️';
+                document.getElementById('divider').textContent = (data['- Divider Thickness'] || '10') + ' px';
+
+                status.innerHTML = '<span class="success">✅ Split view working! You should see 2 panes side-by-side.</span>';
+            } catch (error) {
+                status.innerHTML = `<span class="error">❌ Error: ${error}</span>`;
+                console.error('Error:', error);
+            }
+        }
+
+        // Auto-refresh on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(refreshInfo, 500);
+        });
+    </script>
+</body>
+</html>
