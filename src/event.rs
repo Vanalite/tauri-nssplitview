@@ -36,9 +36,9 @@
 ///
 /// Usage:
 /// ```
-/// use tauri_splitview::tauri_splitview;
+/// use tauri_nssplitview::tauri_nssplitview;
 ///
-/// tauri_splitview! {
+/// tauri_nssplitview! {
 ///     splitview_event!(MySplitViewEventHandler {
 ///         window_did_become_key(notification: &NSNotification) -> (),
 ///         window_should_close(window: &NSWindow) -> Bool,
@@ -267,9 +267,9 @@ macro_rules! splitview_event {
 
 // Example usage:
 //
-// use tauri_splitview::tauri_splitview;
+// use tauri_nssplitview::tauri_nssplitview;
 //
-// tauri_splitview! {
+// tauri_nssplitview! {
 //     splitview_event!(MySplitViewEventHandler {
 //         window_did_become_key(notification: &NSNotification) -> (),
 //         window_will_close(window: &NSWindow) -> (),

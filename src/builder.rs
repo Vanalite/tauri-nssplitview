@@ -61,7 +61,7 @@ pub(crate) struct SplitViewConfig {
 ///
 /// # Example
 /// ```rust
-/// use tauri_splitview::{SplitViewBuilder, SplitViewOrientation, PaneConfig};
+/// use tauri_nssplitview::{SplitViewBuilder, SplitViewOrientation, PaneConfig};
 /// use tauri::WebviewUrl;
 ///
 /// let split_view = SplitViewBuilder::new(&app, "my-splitview")
@@ -144,7 +144,7 @@ impl<'a, R: Runtime + 'a, T: FromWindow<R> + 'static> SplitViewBuilder<'a, R, T>
     ///
     /// # Example
     /// ```rust
-    /// use tauri_splitview::SplitViewBuilder;
+    /// use tauri_nssplitview::SplitViewBuilder;
     ///
     /// SplitViewBuilder::new(&app, "my-splitview")
     ///     .with_window(|window| {
@@ -185,11 +185,7 @@ impl<'a, R: Runtime + 'a, T: FromWindow<R> + 'static> SplitViewBuilder<'a, R, T>
             })
             .unwrap_or(WebviewUrl::App("index.html".into()));
 
-        let mut window_builder = WebviewWindowBuilder::new(
-            self.handle,
-            &self.label,
-            url,
-        );
+        let mut window_builder = WebviewWindowBuilder::new(self.handle, &self.label, url);
 
         if let Some(title) = self.title {
             window_builder = window_builder.title(title);

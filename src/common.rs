@@ -1,6 +1,6 @@
 /// Top-level macro that wraps split view and event handler declarations
 #[macro_export]
-macro_rules! tauri_splitview {
+macro_rules! tauri_nssplitview {
     // Pattern for split view class definition
     ($splitview_name:ident {
         $(

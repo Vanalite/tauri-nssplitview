@@ -2,14 +2,16 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::Manager;
-use tauri_splitview::{BasicSplitView, ManagerExt, WebviewWindowExt};
+use tauri_nssplitview::{BasicSplitView, ManagerExt, WebviewWindowExt};
 
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_splitview::init())
+        .plugin(tauri_nssplitview::init())
         .setup(|app| {
             // Get the main window that Tauri creates by default
-            let window = app.get_webview_window("main").expect("Main window not found");
+            let window = app
+                .get_webview_window("main")
+                .expect("Main window not found");
 
             // Convert the window to a split view
             let split_view = window.to_split_view::<BasicSplitView>()?;
@@ -39,13 +41,13 @@ fn main() {
 }
 
 #[cfg(target_os = "macos")]
-fn add_native_view(split_view: &dyn tauri_splitview::SplitView) {
-    // Use the re-exported types from tauri_splitview
-    use tauri_splitview::objc2;
-    use tauri_splitview::objc2::rc::Retained;
-    use tauri_splitview::objc2::runtime::AnyObject;
-    use tauri_splitview::objc2_app_kit::NSView;
-    use tauri_splitview::objc2_foundation::{NSPoint, NSRect, NSSize};
+fn add_native_view(split_view: &dyn tauri_nssplitview::SplitView) {
+    // Use the re-exported types from tauri_nssplitview
+    use tauri_nssplitview::objc2;
+    use tauri_nssplitview::objc2::rc::Retained;
+    use tauri_nssplitview::objc2::runtime::AnyObject;
+    use tauri_nssplitview::objc2_app_kit::NSView;
+    use tauri_nssplitview::objc2_foundation::{NSPoint, NSRect, NSSize};
 
     unsafe {
         // Get the NSSplitView
@@ -70,10 +72,8 @@ fn add_native_view(split_view: &dyn tauri_splitview::SplitView) {
         let layer: *mut AnyObject = objc2::msg_send![&*native_view, layer];
 
         // Create purple color (RGB: 0.4, 0.3, 0.6)
-        let color_space: *mut AnyObject = objc2::msg_send![
-            objc2::class!(NSColorSpace),
-            deviceRGBColorSpace
-        ];
+        let color_space: *mut AnyObject =
+            objc2::msg_send![objc2::class!(NSColorSpace), deviceRGBColorSpace];
         let components: [f64; 4] = [0.4, 0.3, 0.6, 1.0];
         let color: *mut AnyObject = objc2::msg_send![
             objc2::class!(NSColor),
@@ -92,7 +92,7 @@ fn add_native_view(split_view: &dyn tauri_splitview::SplitView) {
 }
 
 #[cfg(not(target_os = "macos"))]
-fn add_native_view(_split_view: &dyn tauri_splitview::SplitView) {
+fn add_native_view(_split_view: &dyn tauri_nssplitview::SplitView) {
     println!("  ⚠ Native views only supported on macOS");
 }
 

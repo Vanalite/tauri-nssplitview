@@ -1,4 +1,4 @@
-# tauri-splitview
+# tauri-nssplitview
 
 Create macOS split views for your Tauri app using native NSSplitView. Build applications with multiple views where one or more use native macOS split view functionality alongside standard Tauri webviews.
 
@@ -15,7 +15,7 @@ Add to your `Cargo.toml`:
 ```toml
 [dependencies]
 tauri = { version = "2.8", features = ["macos-private-api"] }
-tauri-splitview = { git = "https://github.com/vanalite/tauri-splitview" }
+tauri-nssplitview = { git = "https://github.com/Vanalite/tauri-nssplitview" }
 ```
 
 ### 2. Initialize the Plugin
@@ -23,7 +23,7 @@ tauri-splitview = { git = "https://github.com/vanalite/tauri-splitview" }
 ```rust
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_splitview::init())
+        .plugin(tauri_nssplitview::init())
         .setup(|app| {
             // Your setup code here
             Ok(())
@@ -39,7 +39,7 @@ fn main() {
 
 ```rust
 use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
-use tauri_splitview::{BasicSplitView, WebviewWindowExt};
+use tauri_nssplitview::{BasicSplitView, WebviewWindowExt};
 
 // In your setup function
 let window = WebviewWindowBuilder::new(
@@ -62,7 +62,7 @@ split_view.show();
 
 ```rust
 use tauri::Manager;
-use tauri_splitview::ManagerExt;
+use tauri_nssplitview::ManagerExt;
 
 #[tauri::command]
 fn get_split_info(app: tauri::AppHandle) -> Result<String, String> {
@@ -122,7 +122,7 @@ split_view.label() -> &str;
 ### Manager Extensions
 
 ```rust
-use tauri_splitview::ManagerExt;
+use tauri_nssplitview::ManagerExt;
 
 // Get split view by label
 let split_view = app.get_split_view("main")?;
@@ -134,7 +134,7 @@ app.remove_split_view("main");
 ### Window Extensions
 
 ```rust
-use tauri_splitview::WebviewWindowExt;
+use tauri_nssplitview::WebviewWindowExt;
 
 // Convert any Tauri window to a split view
 let split_view = window.to_split_view::<BasicSplitView>()?;
@@ -196,17 +196,15 @@ The plugin:
 ## Documentation
 
 - **README.md** - This file (getting started)
-- **CLAUDE.md** - Architecture and development guide
 - **PROGRESS.md** - Implementation details
 - **examples/** - Working code examples
 
 ## Contributing
 
 Contributions welcome! Please:
-1. Read the architecture guide in CLAUDE.md
-2. Check existing issues
-3. Submit PRs with tests
-4. Follow Rust conventions
+1. Check existing issues
+2. Submit PRs with tests
+3. Follow Rust conventions
 
 ## License
 

@@ -1,0 +1,5 @@
+target/*
+examples/basic-splitview/target/*
+examples/basic-splitview/gen/*
+examples/basic-splitview/src-tauri/gen/*
+examples/basic-splitview/src-tauri/target/*

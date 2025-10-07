@@ -1,5 +1,5 @@
 {
-  "name": "tauri-splitview",
+  "name": "tauri-nssplitview",
   "version": "0.1.0",
   "description": "A Tauri plugin for creating native macOS split views using NSSplitView",
   "license": "MIT or APACHE-2.0",

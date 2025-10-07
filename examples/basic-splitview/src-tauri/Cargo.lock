@@ -126,7 +126,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
- "tauri-splitview",
+ "tauri-nssplitview",
 ]
 
 [[package]]
@@ -3373,6 +3373,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-nssplitview"
+version = "0.1.0"
+dependencies = [
+ "objc2 0.6.3",
+ "objc2-app-kit",
+ "objc2-foundation 0.3.2",
+ "pastey",
+ "tauri",
+ "tauri-plugin",
+]
+
+[[package]]
+name = "tauri-plugin"
+version = "2.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9946a3cede302eac0c6eb6c6070ac47b1768e326092d32efbb91f21ed58d978f"
+dependencies = [
+ "schemars 0.8.22",
+ "tauri-utils",
+]
+
+[[package]]
 name = "tauri-runtime"
 version = "2.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3422,17 +3444,6 @@ dependencies = [
  "webview2-com",
  "windows",
  "wry",
-]
-
-[[package]]
-name = "tauri-splitview"
-version = "0.1.0"
-dependencies = [
- "objc2 0.6.3",
- "objc2-app-kit",
- "objc2-foundation 0.3.2",
- "pastey",
- "tauri",
 ]
 
 [[package]]

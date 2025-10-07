@@ -1,6 +1,6 @@
 # Basic Split View Example - Two Panes Side-by-Side
 
-This example demonstrates **the key feature** of tauri-splitview: **native macOS views alongside Tauri webviews**.
+This example demonstrates **the key feature** of tauri-nssplitview: **native macOS views alongside Tauri webviews**.
 
 ## What You'll See
 
